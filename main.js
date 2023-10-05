@@ -29,28 +29,33 @@ const duration = 10.0;
 
 // Load inputs:
 let input_lines, animArray;
-await fetch('keyframe-input.txt')
-  .then(response => response.text())
-  .then(data => {
-    input_lines = data.split('\n');
-    animArray = input_lines.map(line => {
-        const [time, x, y, z, xa, ya, za, angle] = line.split(' ');
-        return {
-            time: parseFloat(time),
-            x: parseFloat(x),
-            y: parseFloat(y),
-            z: parseFloat(z),
-            xa: parseFloat(xa),
-            ya: parseFloat(ya),
-            za: parseFloat(za),
-            angle: parseFloat(angle)
-        };
+
+async function loadData(){
+    await fetch('./keyframe-input.txt')
+    .then(response => response.text())
+    .then(data => {
+        input_lines = data.split('\n');
+        animArray = input_lines.map(line => {
+            const [time, x, y, z, xa, ya, za, angle] = line.split(' ');
+            return {
+                time: parseFloat(time),
+                x: parseFloat(x),
+                y: parseFloat(y),
+                z: parseFloat(z),
+                xa: parseFloat(xa),
+                ya: parseFloat(ya),
+                za: parseFloat(za),
+                angle: parseFloat(angle)
+            };
+        });
+        console.log(animArray[0]["time"])
+    })
+    .catch(error => {
+        console.error('Error fetching the file:', error);
     });
-    console.log(animArray[0]["time"])
-  })
-  .catch(error => {
-    console.error('Error fetching the file:', error);
-  });
+}
+loadData();
+
 
 console.log(animArray);
 
@@ -68,10 +73,14 @@ function degToRad(degrees) {
 // Check if the interpolation indexes are valid
 function checkDataForInterpolation(elapsed_time) {
     if(elapsed_time >= animArray[dataIndexEnd]["time"]){
-        dataIndexStart += 1;
-        dataIndexEnd += 1;
-        checkDataForInterpolation(elapsed_time); // Make sure it still runs with a gap.
+        if (dataIndexEnd < animArray.length-1) {
+            dataIndexStart += 1;
+            dataIndexEnd += 1;
+            checkDataForInterpolation(elapsed_time); // Make sure it still runs with a gap.
+        }
+        
     }
+    
 }
 
 function customSlerp(q0, q1, t) {
@@ -158,12 +167,9 @@ function animate() {
     const delta_time = clock.getDelta();
     const elapsed_time = clock.getElapsedTime();
 
-    checkDataForInterpolation(elapsed_time);
-    const [pos, rot] = intepolateAnimData(elapsed_time);
-
-    //console.log(elapsed_time, cube.position, cube.quaternion);
-    // console.log(dataIndexStart, dataIndexEnd, elapsed_time);
-    if (elapsed_time <= duration){
+    if (elapsed_time < duration){
+        checkDataForInterpolation(elapsed_time);
+        const [pos, rot] = intepolateAnimData(elapsed_time);
         cube.position.copy(pos);
         cube.quaternion.copy(rot);
     }
