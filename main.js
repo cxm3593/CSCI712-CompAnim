@@ -5,6 +5,12 @@ import {MotionClip, MySkeleton} from './MySkeleton';
 
 
 /// Scene Initialization
+var selectedFile = "./resources/wave.bvh";
+document.getElementById('bvh-selector').addEventListener('change', function(event) {
+    selectedFile = event.target.value;
+});
+
+console.log(selectedFile);
 
 const clock = new THREE.Clock();
 const scene = new THREE.Scene();
@@ -41,16 +47,21 @@ plane.rotation.x = THREE.MathUtils.degToRad(-90);
 plane.position.y = 100;
 scene.add(plane);
 
-let mixer, figure, figure_skeleton, motion_clip, duration;
+let mixer, figure, figure_skeleton, motion_clip, duration, example;
 
 // Load BVH file //
 
 const loader = new BVHLoader();
-loader.load("./resources/wave.bvh", function(result) {
+loader.load(selectedFile, function(result) {
     const skeletonHelper = new THREE.SkeletonHelper( result.skeleton.bones[ 0 ] );
 
-    // scene.add( result.skeleton.bones[ 0 ] );
-    // scene.add( skeletonHelper );
+    example = new THREE.Object3D();
+    example.add(result.skeleton.bones[0]);
+    example.add(skeletonHelper);
+    example.position.y = 50;
+    example.position.x = 100;
+    scene.add( example);
+
     scene.updateMatrixWorld(true);
 
     //mixer = new THREE.AnimationMixer( result.skeleton.bones[ 0 ] );
@@ -81,22 +92,61 @@ loader.load("./resources/wave.bvh", function(result) {
     animate();
 } );
 
+document.getElementById('bvh-selector').addEventListener('change', function(event) {
+    selectedFile = event.target.value;
+    scene.remove(figure);
+    loader.load(selectedFile, function(result) {
+        figure_skeleton = new MySkeleton(result.skeleton);
+        motion_clip = new MotionClip(result.clip);
+        duration = result.clip.duration;
+        const root = figure_skeleton.generateFigure();
+        figure = new THREE.Object3D();
+        figure.add(root);
+        figure.position.y = 100;
+        scene.add(figure);
+
+        scene.remove(example);
+        example = new THREE.Object3D();
+        example.add(result.skeleton.bones[0]);
+        const skeletonHelper = new THREE.SkeletonHelper( result.skeleton.bones[ 0 ] );
+        example.add(skeletonHelper);
+        example.position.y = 50;
+        example.position.x = 100;
+        scene.add( example);
+    });
+
+    
+})
+
 
 //// Animation ////
-
+let playback_rate = 1.0;
+window.setRate = setRate;
+function setRate() {
+    playback_rate = parseFloat(document.getElementById('playBackSet').value);
+    if (!isNaN(playback_rate)) {
+      motion_clip.playbackRate = playback_rate;
+    }
+}
+document.getElementById('button').addEventListener('click', setRate);
 
 // Animation loop
 function animate() {
 	requestAnimationFrame( animate );
 
-    const delta = clock.getDelta();
+    
     var elasped = clock.getElapsedTime();
+    elasped = elasped * playback_rate;
+    var playtime = 0.0;
     if (elasped > duration){
-        elasped = elasped - duration;
+        playtime = elasped % duration;
+    }
+    else{
+        playtime = elasped;
     }
     // if ( mixer ) mixer.update( delta );
 
-    const update_values = motion_clip.getUpdate(elasped);
+    const update_values = motion_clip.getUpdate(playtime);
     figure_skeleton.updateSkeleton(update_values);
 
 	renderer.render( scene, camera );
