@@ -1,7 +1,6 @@
 import * as THREE from 'three';
 import { BVHLoader } from './BVHLoader';
 import {MotionClip, MySkeleton} from './MySkeleton';
-import { degToRad, radToDeg } from 'three/src/math/mathutils';
 
 
 /// Scene Initialization
@@ -31,7 +30,7 @@ const plane_color = new THREE.Color();
 plane_color.setRGB(0.3, 0.3, 0.3);
 const plane_mat = new THREE.MeshBasicMaterial({color: plane_color});
 const plane = new THREE.Mesh(plane_geo, plane_mat);
-plane.rotation.x = degToRad(-90);
+plane.rotation.x = THREE.degToRad(-90);
 plane.position.y = 100;
 scene.add(plane);
 
