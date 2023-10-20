@@ -6,10 +6,21 @@
 		<style>
 			body { margin: 0; }
 		</style>
-		<script type="module" crossorigin src="assets/index-95fbae9d.js"></script>
+		<script type="module" crossorigin src="/assets/index-fcf8c483.js"></script>
 	</head>
 	<body>
-		
+		<div>
+			<div><p>Motion file</p></div>
+			<select id="bvh-selector">
+				<option value="./resources/wave.bvh">wave</option>
+				<option value="./resources/Sit.bvh">Sit</option>
+				<option value="./resources/Ambient.bvh">Ambient</option>
+			</select>
+			<p>Drag for orbit view. The figure with green and red is my articulated figure. The green and blue one is threejs example</p>
+			<p>Set play back rate</p>
+			<input type="text" id="playBackSet" value="1.0">
+			<button id="button" onclick="setRate()">Set Rate</button>
+		</div>
 		
 	</body>
 </html>
