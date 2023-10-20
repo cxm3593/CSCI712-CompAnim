@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { BVHLoader } from './BVHLoader';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import {MotionClip, MySkeleton} from './MySkeleton';
 
 
@@ -10,9 +11,15 @@ const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera( 90, window.innerWidth / window.innerHeight, 0.1, 1000 );
 camera.position.set( 0, 200, 300 );
 
+
+
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize( window.innerWidth, window.innerHeight );
 document.body.appendChild( renderer.domElement );
+
+const controls = new OrbitControls( camera, renderer.domElement );
+controls.minDistance = 300;
+controls.maxDistance = 700;
 
 /// Settings:
 window.addEventListener('resize', function() {
