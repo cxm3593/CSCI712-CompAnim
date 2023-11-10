@@ -6,13 +6,21 @@
 		<style>
 			body { margin: 0; }
 		</style>
-		<script type="module" crossorigin src="/CSCI712-CompAnim/assets/billards-4bdf739e.js"></script>
-		<link rel="modulepreload" crossorigin href="/CSCI712-CompAnim/assets/OrbitControls-229c7648.js">
+		<script type="module" crossorigin src="/CSCI712-CompAnim/assets/billards-45919555.js"></script>
+		<link rel="modulepreload" crossorigin href="/CSCI712-CompAnim/assets/OrbitControls-322fbf48.js">
 	</head>
 	<body>
 		<div>
             <h1>Billards</h1>
             <button id="play_button" onclick="setPlay()">Play</button>
+            <button id="velocity_button" onclick="setVelocity()">Set Velocity</button>
+            <br>
+            <label for="input_name">Velocity X</label>
+            <input type="range" min="-100" max="100" value="0" class="slider" id="v0_x">
+            <label for="input_name">Velocity Y</label>
+            <input type="range" min="-100" max="100" value="0" class="slider" id="v0_y">
+            <label for="input_name">Velocity Z</label>
+            <input type="range" min="-100" max="100" value="0" class="slider" id="v0_z">
 		</div>
 		
 	</body>
