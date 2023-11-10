@@ -1,7 +1,7 @@
 import * as THREE from 'three';
-import { BVHLoader } from './BVHLoader';
+import { BVHLoader } from './resources/BVHLoader';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import {MotionClip, MySkeleton} from './MySkeleton';
+import {MotionClip, MySkeleton} from './resources/MySkeleton';
 
 
 /// Scene Initialization
@@ -129,6 +129,18 @@ function setRate() {
     }
 }
 document.getElementById('button').addEventListener('click', setRate);
+
+window.setPause = setPause;
+function setPause() {
+    clock.stop();
+}
+document.getElementById('pause_button').addEventListener('click', setPause);
+
+window.setPlay = setPlay;
+function setPlay() {
+    clock.start();
+}
+document.getElementById('play_button').addEventListener('click', setPlay);
 
 // Animation loop
 function animate() {
