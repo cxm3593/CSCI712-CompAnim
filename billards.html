@@ -11,6 +11,14 @@
 		<div>
             <h1>Billards</h1>
             <button id="play_button" onclick="setPlay()">Play</button>
+            <button id="velocity_button" onclick="setVelocity()">Set Velocity</button>
+            <br>
+            <label for="input_name">Velocity X</label>
+            <input type="range" min="-100" max="100" value="0" class="slider" id="v0_x">
+            <label for="input_name">Velocity Y</label>
+            <input type="range" min="-100" max="100" value="0" class="slider" id="v0_y">
+            <label for="input_name">Velocity Z</label>
+            <input type="range" min="-100" max="100" value="0" class="slider" id="v0_z">
 		</div>
 		<script type="module" src="billards.js"></script>
 	</body>

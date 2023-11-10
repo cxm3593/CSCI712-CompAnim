@@ -189,7 +189,6 @@ const cue_ball = new THREE.Mesh(Ball_geo, cue_mat);
 cue_ball.position.y = 4;
 scene.add(cue_ball);
 const cue_ball_object = new Ball(cue_ball, "Cue");
-cue_ball_object.setVelocity(new THREE.Vector3(100, 0, 75));
 
 const redBall_color = new THREE.Color();
 redBall_color.setRGB(0.9, 0.1, 0.1);
@@ -212,12 +211,44 @@ balls.push(cue_ball_object);
 balls.push(red_ball_object);
 balls.push(green_ball_object);
 
+// Get initial Velocity:
+let v0_x = document.getElementById('v0_x').value;
+let v0_y = 0;
+let v0_z = document.getElementById('v0_z').value;
+
+let velocity = new THREE.Vector3(v0_x, v0_y, v0_z);
+let p1 = new THREE.Vector3();
+const geometry = new THREE.BufferGeometry().setFromPoints([p1, velocity]);
+const line_color = new THREE.Color();
+line_color.setRGB(0.0, 1.0, 0.0);
+const material = new THREE.LineBasicMaterial({color: line_color});
+const line = new THREE.Line(geometry, material);
+cue_ball.add(line);
+
+window.setVelocity = setVelocity;
+function setVelocity() {
+    let v0_x = document.getElementById('v0_x').value;
+    let v0_y = 0;
+    let v0_z = document.getElementById('v0_z').value;
+
+    let velocity = new THREE.Vector3(v0_x, v0_y, v0_z);
+    cue_ball_object.setVelocity(velocity);
+    console.log(cue_ball_object.velocity);
+}
+document.getElementById('velocity_button').addEventListener('click', setVelocity);
+
 
 // Animation Loop
 function animate() {
 	requestAnimationFrame( animate );
     var delta_time = clock.getDelta();
     elasped = clock.getElapsedTime();
+
+    let v0_x = document.getElementById('v0_x').value;
+    let v0_y = 0;
+    let v0_z = document.getElementById('v0_z').value;
+    let velocity = new THREE.Vector3(v0_x, v0_y, v0_z);
+    line.geometry.setFromPoints([p1, velocity]);
 
     for (let i = 0; i < balls.length; i++){
         var the_ball = balls[i];
