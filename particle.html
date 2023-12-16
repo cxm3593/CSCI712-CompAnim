@@ -6,21 +6,22 @@
 		<style>
 			body { margin: 0; }
 		</style>
-		<script type="module" crossorigin src="/CSCI712-CompAnim/assets/billards-30cae250.js"></script>
+		<script type="module" crossorigin src="/CSCI712-CompAnim/assets/particle-054f5bef.js"></script>
 		<link rel="modulepreload" crossorigin href="/CSCI712-CompAnim/assets/OrbitControls-4ff66f46.js">
 	</head>
 	<body>
 		<div>
-            <h1>Billards</h1>
-            <button id="play_button" onclick="setPlay()">Play</button>
-            <button id="velocity_button" onclick="setVelocity()">Set Velocity</button>
-            <br>
-            <label for="input_name">Velocity X</label>
+            <h1>Particle</h1>
+            <label for="input_name">Direction X</label>
             <input type="range" min="-100" max="100" value="0" class="slider" id="v0_x">
-            <label for="input_name">Velocity Y</label>
+            <label for="input_name">Direction Y</label>
             <input type="range" min="-100" max="100" value="0" class="slider" id="v0_y">
-            <label for="input_name">Velocity Z</label>
+            <label for="input_name">Direction Z</label>
             <input type="range" min="-100" max="100" value="0" class="slider" id="v0_z">
+            <label for="input_name">Speed</label>
+            <input type="range" min="0" max="10" value="5" class="slider" id="speed">
+            <label for="input_name">Gravity</label>
+            <input type="range" min="0" max="20" value="9.8" class="slider" id="gravity">
 		</div>
 		
 	</body>
